@@ -1,0 +1,14 @@
+{
+  "name": "calendar-heatmap",
+  "version": "1.0.0",
+  "description": "a js package can generate calendar heatmap, and render html doms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "calendar-heatmap"
+  ],
+  "author": "hunterji",
+  "license": "MIT"
+}
