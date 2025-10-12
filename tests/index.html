@@ -54,7 +54,8 @@
 
     const heatmapYear = new CalendarHeatmap('#year-view', yearData, {
       view: 'year',
-      year: currentYear
+      year: currentYear,
+      legend: false
     });
 
     const monthData = createSampleData(new Date(currentYear, 4, 1), 62, 10);

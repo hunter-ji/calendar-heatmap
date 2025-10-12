@@ -27,7 +27,7 @@
 		squareGap: 2,
 		colorScale: DEFAULT_COLORS,
 		maxValue: null,
-		legend: true,
+		legend: false,
 		tooltip: true,
 		locale: undefined
 	};
