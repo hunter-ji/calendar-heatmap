@@ -322,7 +322,7 @@
 				dayNode.dataset.date = key;
 				dayNode.dataset.rangeStart = dateKey(start);
 				dayNode.dataset.rangeEnd = dateKey(end);
-				dayNode.title = `${value} on ${formatter.format(dayDate)}`;
+				dayNode.title = '';
 
 				currentWeek.push(dayNode);
 			});
