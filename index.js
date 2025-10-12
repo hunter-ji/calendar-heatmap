@@ -299,8 +299,18 @@
             // Track week columns for grouping.
             let currentWeek = [];
             let currentWeekNumber = null;
+            const isYearView = this.options.view === 'year';
 
-            dates.forEach((dayDate, index) => {
+            const today = new Date();
+            today.setHours(24, 0, 0, 0);
+
+            for (let index = 0; index < dates.length; index += 1) {
+                const dayDate = dates[index];
+				const key = dateKey(dayDate);
+				if (isYearView && key > dateKey(today)) {
+					break;
+				}
+
                 const weekNumber = Math.floor(index / 7);
                 if (currentWeekNumber !== weekNumber) {
                     if (currentWeek.length) {
@@ -310,7 +320,6 @@
                     currentWeekNumber = weekNumber;
                 }
 
-                const key = dateKey(dayDate);
                 const value = this.data.get(key) || 0;
                 const { color, level } = computeColor(value, maxValue, this.options.colorScale);
 
@@ -325,7 +334,7 @@
                 dayNode.title = '';
 
                 currentWeek.push(dayNode);
-            });
+            };
 
             if (currentWeek.length) {
                 grid.appendChild(buildWeekColumn(currentWeek));
