@@ -54,7 +54,7 @@
         style.textContent = [
             ".ch-root { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; --ch-size: 14px; --ch-gap: 2px; }",
             '.ch-grid { display: grid; grid-auto-flow: column; grid-auto-columns: max-content; column-gap: var(--ch-gap); }',
-            '.ch-week { display: grid; grid-template-rows: repeat(7, auto); row-gap: var(--ch-gap); }',
+            '.ch-week { display: grid; grid-template-rows: repeat(7, 1fr); row-gap: var(--ch-gap); }',
             `.ch-day { width: var(--ch-size); height: var(--ch-size); box-sizing: border-box; border-radius: 2px; background-color: ${DEFAULT_COLORS[0]}; position: relative; }`,
             `.ch-day[data-level="0"] { background-color: ${DEFAULT_COLORS[0]}; }`,
             '.ch-tooltip { position: absolute; pointer-events: none; z-index: 9999; padding: 4px 6px; border-radius: 4px; font-size: 12px; background: rgba(17, 24, 39, 0.9); color: #fff; }',
