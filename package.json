@@ -4,7 +4,17 @@
   "description": "A lightweight JavaScript library for rendering calendar heatmaps.",
   "main": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.min.js",
+    "index.d.ts",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE"
+  ],
   "scripts": {
+    "build": "terser index.js -c -m -o index.min.js --comments /^!/",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -14,5 +24,8 @@
     "name": "hunterji",
     "url": "https://hunterji.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "terser": "^5.44.0"
+  }
 }

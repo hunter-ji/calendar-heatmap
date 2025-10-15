@@ -21,7 +21,15 @@ npm install calendar-heatmap
 yarn add calendar-heatmap
 ```
 
-也可以直接通过 `<script>` 标签引入打包好的 `index.js` 文件。
+也可以直接通过 `<script>` 标签引入打包好的 `index.js` 或压缩后的 `index.min.js` 文件。
+
+```html
+<!-- 生产环境使用压缩版本 -->
+<script src="path/to/calendar-heatmap/index.min.js"></script>
+
+<!-- 或者开发环境使用未压缩版本 -->
+<script src="path/to/calendar-heatmap/index.js"></script>
+```
 
 ## 快速上手
 ```html

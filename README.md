@@ -21,7 +21,15 @@ npm install calendar-heatmap
 yarn add calendar-heatmap
 ```
 
-You can also load the bundled `index.js` directly via a `<script>` tag.
+You can also load the bundled `index.js` or minified `index.min.js` directly via a `<script>` tag.
+
+```html
+<!-- Use the minified version for production -->
+<script src="path/to/calendar-heatmap/index.min.js"></script>
+
+<!-- Or use the unminified version for development -->
+<script src="path/to/calendar-heatmap/index.js"></script>
+```
 
 ## Quick Start
 ```html
