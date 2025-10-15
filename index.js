@@ -162,10 +162,12 @@
     }
 
     function dateKey(date) {
-        return date.toISOString().slice(0, 10);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 
-    // 新增：将 Date 或字符串解析为标准 YYYY-MM-DD 键
     function parseKey(input) {
         if (input instanceof Date) {
             return dateKey(input);
@@ -424,14 +426,14 @@
             const isYearView = this.options.view === 'year';
 
             const today = new Date();
-            today.setHours(24, 0, 0, 0);
+            const weekStart = this.options.weekStart % 7;
 
             for (let index = 0; index < dates.length; index += 1) {
                 const dayDate = dates[index];
-				const key = dateKey(dayDate);
-				if (isYearView && key > dateKey(today)) {
-					break;
-				}
+                const key = dateKey(dayDate);
+                if (isYearView && key > dateKey(today)) {
+                    break;
+                }
 
                 const weekNumber = Math.floor(index / 7);
                 if (currentWeekNumber !== weekNumber) {
@@ -444,6 +446,7 @@
 
                 const value = this.data.get(key) || 0;
                 const { color, level } = computeColor(value, maxValue, this.options.colorScale);
+                const weekdayIndex = (dayDate.getDay() - weekStart + 7) % 7;
 
                 const dayNode = document.createElement('div');
                 dayNode.className = 'ch-day';
@@ -454,6 +457,7 @@
                 dayNode.dataset.rangeStart = dateKey(start);
                 dayNode.dataset.rangeEnd = dateKey(end);
                 dayNode.title = '';
+                dayNode.style.gridRowStart = String(weekdayIndex + 1);
 
                 currentWeek.push(dayNode);
             };

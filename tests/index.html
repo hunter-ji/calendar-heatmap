@@ -234,12 +234,11 @@
       colorScale: ['#f0f9ff', '#bae6fd', '#7dd3fc', '#38bdf8', '#0ea5e9']
     });
 
-    const i18nData = createSampleData(new Date(currentYear, 0, 1), 200, 12);
-    const heatmapI18n = new CalendarHeatmap('#i18n-view', i18nData, {
+    const heatmapI18n = new CalendarHeatmap('#i18n-view', yearData, {
       view: 'year',
       year: currentYear,
       language: languageSelect ? languageSelect.value : 'en',
-      legend: true
+      legend: false
     });
 
     if (languageSelect) {
