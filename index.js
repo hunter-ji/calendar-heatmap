@@ -69,6 +69,21 @@
         return date.toISOString().slice(0, 10);
     }
 
+    // 新增：将 Date 或字符串解析为标准 YYYY-MM-DD 键
+    function parseKey(input) {
+        if (input instanceof Date) {
+            return dateKey(input);
+        }
+        if (typeof input === 'string') {
+            const s = input.trim();
+            const d = new Date(s);
+            if (!Number.isNaN(d.getTime())) {
+                return dateKey(d);
+            }
+        }
+        return null;
+    }
+
     function normalizeData(data) {
         // Collapse incoming records into a date -> value map for quicker lookup during rendering.
         const map = new Map();
@@ -271,6 +286,10 @@
         setData(data = []) {
             this.data = normalizeData(data);
             this.render();
+        }
+
+        replaceData(data = []) {
+            this.setData(data);
         }
 
         render() {
