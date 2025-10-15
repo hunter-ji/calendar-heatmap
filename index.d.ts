@@ -35,6 +35,9 @@ export default class CalendarHeatmap {
 
   setOptions(options?: CalendarHeatmapOptions): void;
   setData(data?: CalendarHeatmapDatum[]): void;
+  replaceData(data?: CalendarHeatmapDatum[]): void;
+  updateData(data?: CalendarHeatmapDatum[]): void;
+  setValue(date: Date | string, value: number): void;
   render(): void;
   destroy(): void;
 
