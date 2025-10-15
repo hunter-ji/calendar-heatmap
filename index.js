@@ -29,8 +29,104 @@
         maxValue: null,
         legend: false,
         tooltip: true,
-        locale: undefined
+        locale: undefined,
+        language: 'en'
     };
+
+    const LANGUAGE_CONFIG = {
+        en: {
+            locale: 'en-US',
+            legend: { less: 'Less', more: 'More' },
+            weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            tooltip: (value, date) => `${value} on ${date}`
+        },
+        'zh-cn': {
+            locale: 'zh-CN',
+            legend: { less: '较少', more: '较多' },
+            weekdays: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            tooltip: (value, date) => `${date}：${value}`
+        },
+        'zh-tw': {
+            locale: 'zh-TW',
+            legend: { less: '較少', more: '較多' },
+            weekdays: ['週日', '週一', '週二', '週三', '週四', '週五', '週六'],
+            tooltip: (value, date) => `${date}：${value}`
+        },
+        ja: {
+            locale: 'ja-JP',
+            legend: { less: '少ない', more: '多い' },
+            weekdays: ['日', '月', '火', '水', '木', '金', '土'],
+            tooltip: (value, date) => `${date}：${value}`
+        },
+        fr: {
+            locale: 'fr-FR',
+            legend: { less: 'Moins', more: 'Plus' },
+            weekdays: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            tooltip: (value, date) => `${value} le ${date}`
+        },
+        de: {
+            locale: 'de-DE',
+            legend: { less: 'Weniger', more: 'Mehr' },
+            weekdays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+            tooltip: (value, date) => `${value} am ${date}`
+        },
+        ko: {
+            locale: 'ko-KR',
+            legend: { less: '적음', more: '많음' },
+            weekdays: ['일', '월', '화', '수', '목', '금', '토'],
+            tooltip: (value, date) => `${date} ${value}`
+        },
+        es: {
+            locale: 'es-ES',
+            legend: { less: 'Menos', more: 'Más' },
+            weekdays: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+            tooltip: (value, date) => `${value} el ${date}`
+        },
+        it: {
+            locale: 'it-IT',
+            legend: { less: 'Meno', more: 'Più' },
+            weekdays: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+            tooltip: (value, date) => `${value} il ${date}`
+        }
+    };
+
+    const LANGUAGE_ALIASES = {
+        en: 'en',
+        'en-us': 'en',
+        'en-gb': 'en',
+        english: 'en',
+        zh: 'zh-cn',
+        'zh-cn': 'zh-cn',
+        'zh-hans': 'zh-cn',
+        'zh-sg': 'zh-cn',
+        'zh-tw': 'zh-tw',
+        'zh-hant': 'zh-tw',
+        'zh-hk': 'zh-tw',
+        ja: 'ja',
+        'ja-jp': 'ja',
+        japanese: 'ja',
+        fr: 'fr',
+        'fr-fr': 'fr',
+        french: 'fr',
+        de: 'de',
+        'de-de': 'de',
+        german: 'de',
+        ko: 'ko',
+        'ko-kr': 'ko',
+        korean: 'ko',
+        es: 'es',
+        'es-es': 'es',
+        spanish: 'es',
+        it: 'it',
+        'it-it': 'it',
+        italian: 'it'
+    };
+
+    function resolveLanguageConfig(language) {
+        const key = String(language || 'en').toLowerCase();
+        const matched = LANGUAGE_ALIASES[key] || key;
+        return LANGUAGE_CONFIG[matched] || LANGUAGE_CONFIG.en;
+    }
 
     function normalizeContainer(container) {
         if (!container) {
@@ -193,14 +289,15 @@
         return { color: scale[level], level };
     }
 
-    function createLabels(options, locale) {
+    function createLabels(options, languageConfig, locale) {
         if (typeof document === 'undefined') return null;
         const labels = document.createElement('div');
         labels.className = 'ch-labels';
-        const formatter = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+        const customWeekdays = Array.isArray(languageConfig.weekdays) && languageConfig.weekdays.length === 7 ? languageConfig.weekdays : null;
+        const formatter = customWeekdays ? null : new Intl.DateTimeFormat(locale, { weekday: 'short' });
         for (let i = 0; i < 7; i += 1) {
-            const date = new Date(2021, 7, i + options.weekStart); // arbitrary week
-            const text = formatter.format(date);
+            const weekdayIndex = (i + options.weekStart) % 7;
+            const text = customWeekdays ? customWeekdays[weekdayIndex] : formatter.format(new Date(2021, 7, weekdayIndex + 1));
             const label = document.createElement('span');
             label.textContent = text;
             labels.appendChild(label);
@@ -208,13 +305,13 @@
         return labels;
     }
 
-    function createLegend(colors) {
+    function createLegend(colors, legendTexts) {
         if (typeof document === 'undefined') return null;
         const scale = Array.isArray(colors) && colors.length ? colors : DEFAULT_COLORS;
         const legend = document.createElement('div');
         legend.className = 'ch-legend';
         const captionLow = document.createElement('span');
-        captionLow.textContent = 'Less';
+        captionLow.textContent = legendTexts.less;
         legend.appendChild(captionLow);
         scale.forEach((color) => {
             const swatch = document.createElement('span');
@@ -223,7 +320,7 @@
             legend.appendChild(swatch);
         });
         const captionHigh = document.createElement('span');
-        captionHigh.textContent = 'More';
+        captionHigh.textContent = legendTexts.more;
         legend.appendChild(captionHigh);
         return legend;
     }
@@ -294,8 +391,14 @@
 
         render() {
             const { dates, start, end } = generateRange(this.options.view, this.options);
-            const locale = this.options.locale || undefined;
-            const formatter = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' });
+            const languageConfig = resolveLanguageConfig(this.options.language || this.options.locale);
+            const locale = this.options.locale || languageConfig.locale || undefined;
+            let dateFormatter;
+            try {
+                dateFormatter = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
+            } catch (error) {
+                dateFormatter = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' });
+            }
             const values = Array.from(this.data.values());
             const maxValue = this.options.maxValue != null ? this.options.maxValue : values.reduce((acc, value) => Math.max(acc, value), 0);
 
@@ -307,7 +410,7 @@
             const gridWrapper = document.createElement('div');
             gridWrapper.style.display = 'flex';
 
-            const labels = createLabels(this.options, locale);
+            const labels = createLabels(this.options, languageConfig, locale);
             if (labels) {
                 gridWrapper.appendChild(labels);
             }
@@ -366,7 +469,8 @@
 			}
 
             if (this.options.legend) {
-                const legend = createLegend(this.options.colorScale);
+                const legendTexts = Object.assign({}, LANGUAGE_CONFIG.en.legend, languageConfig.legend);
+                const legend = createLegend(this.options.colorScale, legendTexts);
                 if (legend) {
                     root.appendChild(legend);
                 }
@@ -380,7 +484,12 @@
                 this.tooltipDisposer = null;
             }
             if (this.options.tooltip) {
-                const tooltipFormatter = (dataset) => `${dataset.value} on ${dataset.date}`;
+                const tooltipFormatter = (dataset) => {
+                    const value = Number(dataset.value) || 0;
+                    const parsed = new Date(dataset.date);
+                    const dateLabel = Number.isNaN(parsed.getTime()) ? dataset.date : dateFormatter.format(parsed);
+                    return languageConfig.tooltip ? languageConfig.tooltip(value, dateLabel) : LANGUAGE_CONFIG.en.tooltip(value, dateLabel);
+                };
                 this.tooltipDisposer = attachTooltip(root, tooltipFormatter);
             }
         }
@@ -422,6 +531,7 @@
     }
 
     CalendarHeatmap.defaults = Object.assign({}, DEFAULT_OPTIONS);
+    CalendarHeatmap.languages = LANGUAGE_CONFIG;
 
     return CalendarHeatmap;
 });

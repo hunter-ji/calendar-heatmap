@@ -24,6 +24,14 @@ export interface CalendarHeatmapOptions {
   legend?: boolean;
   tooltip?: boolean;
   locale?: string | string[];
+  language?: string;
+}
+
+export interface CalendarHeatmapLanguageConfig {
+  locale?: string;
+  legend?: { less: string; more: string };
+  weekdays?: string[];
+  tooltip?: (value: number, dateLabel: string) => string;
 }
 
 export default class CalendarHeatmap {
@@ -42,6 +50,7 @@ export default class CalendarHeatmap {
   destroy(): void;
 
   static defaults: CalendarHeatmapOptions;
+  static languages: Record<string, CalendarHeatmapLanguageConfig>;
 }
 
 declare global {
