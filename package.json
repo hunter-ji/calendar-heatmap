@@ -1,7 +1,7 @@
 {
   "name": "calendar-heatmap",
   "version": "1.0.0",
-  "description": "a js package can generate calendar heatmap, and render html doms",
+  "description": "A lightweight JavaScript library for rendering calendar heatmaps.",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -10,6 +10,9 @@
   "keywords": [
     "calendar-heatmap"
   ],
-  "author": "hunterji",
+  "author": {
+    "name": "hunterji",
+    "url": "https://hunterji.com"
+  },
   "license": "MIT"
 }
