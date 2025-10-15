@@ -117,4 +117,4 @@ CalendarHeatmap.languages['pt-br'] = {
 - Linting/tests are minimal; contributions welcome
 
 ## License
-MIT License. See `LICENSE` (add one if missing) for details.
+MIT License.

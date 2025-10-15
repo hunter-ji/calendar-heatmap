@@ -1,7 +1,7 @@
 Calendar Heatmap
 ================
 
-[English](../README.md)  | 简体中文
+[English](https://github.com/hunter-ji/calendar-heatmap#calendar-heatmap)  | 简体中文
 
 ![Calendar Heatmap 截图](./Screenshot.jpeg)
 
@@ -81,4 +81,4 @@ CalendarHeatmap.languages['pt-br'] = {
 - 目前校验与测试较少，欢迎补充
 
 ## 许可证
-MIT License。如仓库中暂无，可自行补充 `LICENSE` 文件。
+MIT License。
