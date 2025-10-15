@@ -389,7 +389,7 @@
         const executeTrim = () => {
             const availableWidth = container.clientWidth || container.getBoundingClientRect().width || 0;
             if (!availableWidth) return;
-            while (grid.scrollWidth > availableWidth && grid.children.length > 1) {
+            while (grid.scrollWidth > availableWidth - 40 && grid.children.length > 1) {
                 const firstColumn = grid.firstElementChild;
                 if (!firstColumn) break;
                 grid.removeChild(firstColumn);
