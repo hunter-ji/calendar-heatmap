@@ -1,0 +1,36 @@
+name: Minify JS and Commit to Main
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  minify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install terser
+      run: npm install terser -g
+
+    - name: Minify JS
+      run: |
+        mkdir -p dist
+        terser src/calendar-heatmap.js -o dist/calendar-heatmap.min.js --compress --mangle
+
+    - name: Commit minified JS
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add dist/calendar-heatmap.min.js
+        git commit -m "chore: auto minify JS"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
