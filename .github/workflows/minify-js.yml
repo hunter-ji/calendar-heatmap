@@ -20,17 +20,17 @@ jobs:
     - name: Install terser
       run: npm install terser -g
 
-    - name: Minify JS
+    - name: Minify index.js
       run: |
         mkdir -p dist
-        terser src/calendar-heatmap.js -o dist/calendar-heatmap.min.js --compress --mangle
+        terser index.js -o dist/calendar-heatmap.min.js --compress --mangle
 
-    - name: Commit minified JS
+    - name: Commit and push minified JS
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add dist/calendar-heatmap.min.js
-        git commit -m "chore: auto minify JS"
+        git diff --cached --quiet || git commit -m "chore: auto minify JS"
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
