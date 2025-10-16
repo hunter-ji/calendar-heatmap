@@ -1,6 +1,9 @@
 name: Minify JS and Commit to Main
 
-on: [ push ]
+on:
+  push:
+    branches:
+    - main
 
 jobs:
   minify:
