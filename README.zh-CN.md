@@ -1,9 +1,8 @@
 Calendar Heatmap
-================
-
-[English](https://github.com/hunter-ji/calendar-heatmap#calendar-heatmap)  | 简体中文
 
 ![Calendar Heatmap 截图](./Screenshot.jpeg)
+
+[English](https://github.com/hunter-ji/calendar-heatmap#calendar-heatmap)  | 简体中文
 
 Calendar Heatmap 是一个轻量的 JavaScript 日历热力图库，支持多种时间窗口且无需额外依赖。
 

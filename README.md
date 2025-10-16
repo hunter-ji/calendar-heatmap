@@ -1,9 +1,8 @@
 Calendar Heatmap
-================
-
-English | [简体中文](./README.zh-CN.md) 
 
 ![Screenshot of Calendar Heatmap](./Screenshot.jpeg)
+
+English | [简体中文](./README.zh-CN.md) 
 
 Calendar Heatmap is a lightweight JavaScript library for rendering calendar heatmaps. It works in any modern browser, supports multiple time windows, and ships as a single dependency-free bundle.
 
