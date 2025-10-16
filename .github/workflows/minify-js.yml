@@ -9,28 +9,15 @@ jobs:
   minify:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
+    - name: check out the repository
       uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
+    - name: auto minify files to a different directory
+      uses: nizarmah/auto-minify@v3
       with:
-        node-version: '20'
+        output: 'dist'
 
-    - name: Install terser
-      run: npm install terser -g
-
-    - name: Minify index.js
-      run: |
-        mkdir -p dist
-        terser index.js -o dist/calendar-heatmap.min.js --compress --mangle
-
-    - name: Commit and push minified JS
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add dist/calendar-heatmap.min.js
-        git diff --cached --quiet || git commit -m "chore: auto minify JS"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: auto commit the minified files
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "bot: Add auto minified files"
